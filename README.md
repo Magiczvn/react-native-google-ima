@@ -34,15 +34,6 @@
       compile project(':react-native-google-ima')
   	```
 
-#### Windows
-[Read it! :D](https://github.com/ReactWindows/react-native)
-
-1. In Visual Studio add the `RNReactNativeGoogleIma.sln` in `node_modules/react-native-google-ima/windows/RNReactNativeGoogleIma.sln` folder to their solution, reference from their app.
-2. Open up your `MainPage.cs` app
-  - Add `using Com.Reactlibrary.RNReactNativeGoogleIma;` to the usings at the top of the file
-  - Add `new RNReactNativeGoogleImaPackage()` to the `List<IReactPackage>` returned by the `Packages` method
-
-
 ## Usage
 ```javascript
 import RNReactNativeGoogleIma from 'react-native-google-ima';
