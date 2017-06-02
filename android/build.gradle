@@ -7,7 +7,6 @@ buildscript {
 
     dependencies {
         classpath 'com.android.tools.build:gradle:2.2.0'
-        classpath 'com.google.gms:google-services:3.0.0'
     }
 }
 
@@ -35,6 +34,6 @@ repositories {
 
 dependencies {
     compile 'com.facebook.react:react-native:+'
-    compile 'com.google.android.gms:play-services-ads:10.2.1'
-    compile 'com.google.ads.interactivemedia.v3:interactivemedia:3.6.0'
+    compile 'com.google.android.gms:play-services-ads:+'
+    compile 'com.google.ads.interactivemedia.v3:interactivemedia:+'
 }

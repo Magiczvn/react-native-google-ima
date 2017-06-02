@@ -73,14 +73,10 @@ public class RNReactNativeGoogleImaModule extends ReactContextBaseJavaModule imp
 
 
 
-  public RNReactNativeGoogleImaModule(ReactApplicationContext reactContext, Callback onAdsStartedCallback, Callback onAdsCompletedCallback, Callback onAdsErrorCallback) {
+  public RNReactNativeGoogleImaModule(ReactApplicationContext reactContext) {
     super(reactContext);
     this.reactContext = reactContext;
     this.reactContext.addLifecycleEventListener(this);
-
-    this.onAdsStartedCallback = onAdsStartedCallback;
-    this.onAdsCompletedCallback = onAdsCompletedCallback;
-    this.onAdsErrorCallback = onAdsErrorCallback;
 
     init();
   }
@@ -115,8 +111,12 @@ public class RNReactNativeGoogleImaModule extends ReactContextBaseJavaModule imp
   }
 
   @ReactMethod
-  public void requestAds(String  adTagUrl, ReadableMap viewgroup) {
+  public void requestAds(String  adTagUrl, ReadableMap viewgroup, Callback onAdsStartedCallback, Callback onAdsCompletedCallback, Callback onAdsErrorCallback) {
     final ViewGroup container = (ViewGroup) viewgroup;
+
+    this.onAdsStartedCallback = onAdsStartedCallback;
+    this.onAdsCompletedCallback = onAdsCompletedCallback;
+    this.onAdsErrorCallback = onAdsErrorCallback;
 
     AdDisplayContainer adDisplayContainer = mSdkFactory.createAdDisplayContainer();
     adDisplayContainer.setAdContainer(container);
