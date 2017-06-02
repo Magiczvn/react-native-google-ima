@@ -10,10 +10,12 @@ import com.facebook.react.bridge.NativeModule;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.uimanager.ViewManager;
 import com.facebook.react.bridge.JavaScriptModule;
+import com.facebook.react.bridge.Callback;
+
 public class RNReactNativeGoogleImaPackage implements ReactPackage {
     @Override
-    public List<NativeModule> createNativeModules(ReactApplicationContext reactContext) {
-      return Arrays.<NativeModule>asList(new RNReactNativeGoogleImaModule(reactContext));
+    public List<NativeModule> createNativeModules(ReactApplicationContext reactContext, Callback onAdsStartedCallback, Callback onAdsCompletedCallback, Callback onAdsErrorCallback) {
+      return Arrays.<NativeModule>asList(new RNReactNativeGoogleImaModule(reactContext), onAdsStartedCallback, onAdsCompletedCallback, onAdsErrorCallback);
     }
 
     @Override
