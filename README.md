@@ -1,13 +1,13 @@
 
-# react-native-react-native-google-ima
+# react-native-google-ima
 
 ## Getting started
 
-`$ npm install react-native-react-native-google-ima --save`
+`$ npm install https://github.com/Magiczvn/react-native-google-ima.git --save`
 
 ### Mostly automatic installation
 
-`$ react-native link react-native-react-native-google-ima`
+`$ react-native link react-native-google-ima`
 
 ### Manual installation
 
