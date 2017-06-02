@@ -1,6 +1,6 @@
 
 {
-  "name": "react-native-react-native-google-ima",
+  "name": "react-native-google-ima",
   "version": "1.0.0",
   "description": "Google IMA bridge for React Native",
   "main": "index.js",

@@ -77,13 +77,12 @@ public class RNReactNativeGoogleImaModule extends ReactContextBaseJavaModule imp
     super(reactContext);
     this.reactContext = reactContext;
     this.reactContext.addLifecycleEventListener(this);
-
-    init();
   }
 
+  @ReactMethod
   public void init(){
     mSdkFactory = ImaSdkFactory.getInstance();
-    mAdsLoader = mSdkFactory.createAdsLoader(reactContext);
+    mAdsLoader = mSdkFactory.createAdsLoader(reactContext.getApplicationContext());
     // Add listeners for when ads are loaded and for errors.
     mAdsLoader.addAdErrorListener(onAdsError);
 
@@ -155,9 +154,9 @@ public class RNReactNativeGoogleImaModule extends ReactContextBaseJavaModule imp
 
   @Override
   public void onHostPause() {
-      if (mAdsManager != null && mIsAdDisplayed) {
-        mAdsManager.pause();
-      }
+    if (mAdsManager != null && mIsAdDisplayed) {
+      mAdsManager.pause();
+    }
   }
 
   @Override
