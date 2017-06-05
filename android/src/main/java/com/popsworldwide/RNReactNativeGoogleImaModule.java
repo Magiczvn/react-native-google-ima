@@ -1,6 +1,8 @@
 
 package com.popsworldwide;
 
+import android.os.Debug;
+import android.util.Log;
 import android.view.ViewGroup;
 import com.facebook.react.bridge.LifecycleEventListener;
 import com.facebook.react.bridge.ReactApplicationContext;
@@ -36,6 +38,7 @@ public class RNReactNativeGoogleImaModule extends ReactContextBaseJavaModule imp
   private Callback onAdsErrorCallback;
 
   private boolean mIsAdDisplayed = false;
+  private boolean hasInit = false;
 
 
   private AdErrorEvent.AdErrorListener onAdsError =  new AdErrorEvent.AdErrorListener() {
@@ -81,8 +84,11 @@ public class RNReactNativeGoogleImaModule extends ReactContextBaseJavaModule imp
 
   @ReactMethod
   public void init(){
+    if(hasInit)
+      return;
+
     mSdkFactory = ImaSdkFactory.getInstance();
-    mAdsLoader = mSdkFactory.createAdsLoader(reactContext.getApplicationContext());
+    mAdsLoader = mSdkFactory.createAdsLoader(getCurrentActivity().getBaseContext());
     // Add listeners for when ads are loaded and for errors.
     mAdsLoader.addAdErrorListener(onAdsError);
 
@@ -97,8 +103,10 @@ public class RNReactNativeGoogleImaModule extends ReactContextBaseJavaModule imp
         mAdsManager.addAdErrorListener(onAdsError);
         mAdsManager.addAdEventListener(onAdsEvent);
         mAdsManager.init();
+        Log.d("IMA", "INIT");
       }
     });
+    hasInit = true;
   }
 
   @ReactMethod
@@ -110,15 +118,14 @@ public class RNReactNativeGoogleImaModule extends ReactContextBaseJavaModule imp
   }
 
   @ReactMethod
-  public void requestAds(String  adTagUrl, ReadableMap viewgroup, Callback onAdsStartedCallback, Callback onAdsCompletedCallback, Callback onAdsErrorCallback) {
-    final ViewGroup container = (ViewGroup) viewgroup;
+  public void requestAds(String  adTagUrl, Callback onAdsStartedCallback, Callback onAdsCompletedCallback, Callback onAdsErrorCallback) {
+    Log.d("IMA", "requestAds");
 
     this.onAdsStartedCallback = onAdsStartedCallback;
     this.onAdsCompletedCallback = onAdsCompletedCallback;
     this.onAdsErrorCallback = onAdsErrorCallback;
 
     AdDisplayContainer adDisplayContainer = mSdkFactory.createAdDisplayContainer();
-    adDisplayContainer.setAdContainer(container);
 
     // Create the ads request.
     AdsRequest request = mSdkFactory.createAdsRequest();
