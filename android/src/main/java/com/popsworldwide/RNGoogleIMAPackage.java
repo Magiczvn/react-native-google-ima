@@ -11,16 +11,16 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.uimanager.ViewManager;
 import com.facebook.react.bridge.JavaScriptModule;
 
-public class RNReactNativeGoogleImaPackage implements ReactPackage {
+public class RNGoogleIMAPackage implements ReactPackage {
 
-    public RNReactNativeGoogleImaPackage() {
+    public RNGoogleIMAPackage() {
 
     }
 
 
     @Override
     public List<NativeModule> createNativeModules(ReactApplicationContext reactContext) {
-      return Arrays.<NativeModule>asList(new RNReactNativeGoogleImaModule(reactContext));
+      return Collections.emptyList();
     }
 
     @Override
@@ -30,6 +30,6 @@ public class RNReactNativeGoogleImaPackage implements ReactPackage {
 
     @Override
     public List<ViewManager> createViewManagers(ReactApplicationContext reactContext) {
-      return Collections.emptyList();
+      return Arrays.<ViewManager>asList(new RNGoogleIMAViewGroupManager());
     }
 }
