@@ -1,5 +1,5 @@
 
-# react-native-google-ima
+# react-native-google-ima (Work In Progress)
 
 ## Getting started
 
