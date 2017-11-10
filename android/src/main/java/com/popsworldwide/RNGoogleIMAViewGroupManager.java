@@ -37,6 +37,13 @@ public class RNGoogleIMAViewGroupManager extends ViewGroupManager<RNGoogleIMAVie
       imaView.requestAds();
   }
 
+  @ReactProp(name = "FBPlacementID")
+  public void setFBPlacementID(final RNGoogleIMAView imaView, String tag) {
+    imaView.setFBPlacementID(tag);
+    if(tag!=null)
+      imaView.requestAds();
+  }
+
   @ReactProp(name = "videoPosition")
   public void setVideoPosition(final RNGoogleIMAView imaView, float position) {
     imaView.setVideoPosition(position);

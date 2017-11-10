@@ -1,6 +1,7 @@
 
 package com.popsworldwide;
 
+import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,7 @@ import com.google.ads.interactivemedia.v3.api.AdsRequest;
 import com.google.ads.interactivemedia.v3.api.ImaSdkFactory;
 import com.google.ads.interactivemedia.v3.api.player.VideoAdPlayer;
 import com.google.ads.interactivemedia.v3.api.player.VideoProgressUpdate;
+import com.facebook.ads.*;
 
 
 public class RNGoogleIMAView extends FrameLayout implements LifecycleEventListener{
@@ -51,9 +53,12 @@ public class RNGoogleIMAView extends FrameLayout implements LifecycleEventListen
   private float videoPosition = 0;
   private float videoDuration = 0;
   private String adsTagURL;
+  private String fbPlacementID;
   private RCTEventEmitter mEventEmitter;
   private VideoAdPlayer.VideoAdPlayerCallback videoAdPlayerCallback;
   private VideoAdPlayer mVideoAdPlayer;
+  private InstreamVideoAdView adView;
+
 
   private boolean mIsAdDisplayed = false;
 
@@ -95,10 +100,12 @@ public class RNGoogleIMAView extends FrameLayout implements LifecycleEventListen
   };
 
   @Override public void onViewAdded(View child) {
-    String childName = child.getClass().getSimpleName();
-    if(childName.toLowerCase().contains("webview")){
-      child.measure(getMeasuredWidth(), getMeasuredHeight());
-      child.layout(0,0, getMeasuredWidth(), getMeasuredHeight());
+    if(this.adsTagURL!=null){
+      String childName = child.getClass().getSimpleName();
+      if(childName.toLowerCase().contains("webview")){
+        child.measure(getMeasuredWidth(), getMeasuredHeight());
+        child.layout(0,0, getMeasuredWidth(), getMeasuredHeight());
+      }
     }
     super.onViewAdded(child);
   }
@@ -120,7 +127,7 @@ public class RNGoogleIMAView extends FrameLayout implements LifecycleEventListen
     mSdkFactory = ImaSdkFactory.getInstance();
     mAdsLoader = mSdkFactory.createAdsLoader(this.getContext());
     // Add listeners for when ads are loaded and for errors.
-    mAdsLoader.addAdErrorListener(onAdsError);
+    mAdsLoader.addAdErrorListener(onAdsError);    
 
     mAdsLoader.addAdsLoadedListener(new AdsLoader.AdsLoadedListener() {
       @Override
@@ -149,64 +156,127 @@ public class RNGoogleIMAView extends FrameLayout implements LifecycleEventListen
   }
 
   public void setAdsTagURL(String url){
-    this.adsTagURL = url;
+    this.adsTagURL = url;    ;
+  }
+  public void setFBPlacementID(String url){
+    this.fbPlacementID = url;
   }
 
+  public int pxToDp(int px) {
+    DisplayMetrics displayMetrics = getContext().getResources().getDisplayMetrics();
+    int dp = Math.round(px / (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
+    return dp;
+  }
+
+
   public void requestAds() {
-
-    mVideoAdPlayer = new VideoAdPlayer() {
-      @Override public void playAd() {
-        mEventEmitter.receiveEvent(getId(), Events.EVENT_PLAYAD.toString(), null);
-      }
-
-      @Override public void loadAd(String s) {
-        WritableMap event = Arguments.createMap();
-        event.putString("url", s);
-        mEventEmitter.receiveEvent(getId(), Events.EVENT_LOADAD.toString(), event);
-      }
-
-      @Override public void stopAd() {
-        mEventEmitter.receiveEvent(getId(), Events.EVENT_STOPAD.toString(), null);
-      }
-
-      @Override public void pauseAd() {
-        mEventEmitter.receiveEvent(getId(), Events.EVENT_PAUSEAD.toString(), null);
-      }
-
-      @Override public void resumeAd() {
-        playAd();
-      }
-
-      @Override public void addCallback(VideoAdPlayerCallback callback) {
-        videoAdPlayerCallback = callback;
-      }
-
-      @Override public void removeCallback(VideoAdPlayerCallback callback) {
-        videoAdPlayerCallback = null;
-      }
-
-      @Override public VideoProgressUpdate getAdProgress() {
-
-        if (videoPosition <= 0) {
-          return VideoProgressUpdate.VIDEO_TIME_NOT_READY;
+    if(adsTagURL != null){
+      mVideoAdPlayer = new VideoAdPlayer() {
+        @Override public void playAd() {
+          mEventEmitter.receiveEvent(getId(), Events.EVENT_PLAYAD.toString(), null);
         }
-        return new VideoProgressUpdate((long)videoPosition*1000L, (long)videoDuration*1000L);
-      }
-    };
 
-    AdDisplayContainer adDisplayContainer = mSdkFactory.createAdDisplayContainer();
-    adDisplayContainer.setAdContainer(this);
-    adDisplayContainer.setPlayer(mVideoAdPlayer);
-    // Create the ads request.
-    AdsRequest request = mSdkFactory.createAdsRequest();
+        @Override public void loadAd(String s) {
+          WritableMap event = Arguments.createMap();
+          event.putString("url", s);
+          mEventEmitter.receiveEvent(getId(), Events.EVENT_LOADAD.toString(), event);
+        }
 
-    request.setAdTagUrl(adsTagURL);
-    request.setAdDisplayContainer(adDisplayContainer);
-    request.setAdWillAutoPlay(true);
+        @Override public void stopAd() {
+          mEventEmitter.receiveEvent(getId(), Events.EVENT_STOPAD.toString(), null);
+        }
+
+        @Override public void pauseAd() {
+          mEventEmitter.receiveEvent(getId(), Events.EVENT_PAUSEAD.toString(), null);
+        }
+
+        @Override public void resumeAd() {
+          playAd();
+        }
+
+        @Override public void addCallback(VideoAdPlayerCallback callback) {
+          videoAdPlayerCallback = callback;
+        }
+
+        @Override public void removeCallback(VideoAdPlayerCallback callback) {
+          videoAdPlayerCallback = null;
+        }
+
+        @Override public VideoProgressUpdate getAdProgress() {
+
+          if (videoPosition <= 0) {
+            return VideoProgressUpdate.VIDEO_TIME_NOT_READY;
+          }
+          return new VideoProgressUpdate((long)videoPosition*1000L, (long)videoDuration*1000L);
+        }
+      };
+
+      AdDisplayContainer adDisplayContainer = mSdkFactory.createAdDisplayContainer();
+      adDisplayContainer.setAdContainer(this);
+      adDisplayContainer.setPlayer(mVideoAdPlayer);
+      // Create the ads request.
+      AdsRequest request = mSdkFactory.createAdsRequest();
+
+      request.setAdTagUrl(adsTagURL);
+      request.setAdDisplayContainer(adDisplayContainer);
+      request.setAdWillAutoPlay(true);
 
 
-    // Request the ad. After the ad is loaded, onAdsManagerLoaded() will be called.
-    mAdsLoader.requestAds(request);
+      // Request the ad. After the ad is loaded, onAdsManagerLoaded() will be called.
+      mAdsLoader.requestAds(request);
+    }
+    else if (fbPlacementID != null){
+      /*Facebook ads*/
+      adView = new InstreamVideoAdView(
+          this.getContext(),
+          this.fbPlacementID,
+          new AdSize(
+              pxToDp(this.getMeasuredWidth()),
+              pxToDp(this.getMeasuredHeight())
+          )
+      );
+
+
+
+      adView.setAdListener(new InstreamVideoAdListener() {
+        @Override
+        public void onAdLoaded(Ad ad) {
+          // we have an ad so let's show it
+          RNGoogleIMAView.this.addView(adView);
+          adView.show();
+          mEventEmitter.receiveEvent(getId(), Events.EVENT_LOADAD.toString(), null);
+        }
+
+
+        @Override
+        public void onAdVideoComplete(Ad ad) {
+          if (adView != null) {
+            RNGoogleIMAView.this.removeView(adView);
+            adView.destroy();
+          }
+          mEventEmitter.receiveEvent(getId(), Events.EVENT_STOPAD.toString(), null);
+        }
+
+        @Override
+        public void onError(Ad ad, AdError adError) {
+          WritableMap event = Arguments.createMap();
+          event.putString("message", adError.getErrorMessage());
+
+          mEventEmitter.receiveEvent(getId(), Events.EVENT_ADERROR.toString(), event);
+        }
+
+        @Override
+        public void onAdClicked(Ad ad) {
+
+        }
+
+        @Override public void onLoggingImpression(Ad ad) {
+
+        }
+      });
+      adView.loadAd();
+    }
+
   }
 
   public void setContentProgress(float position, float duration){
@@ -243,6 +313,8 @@ public class RNGoogleIMAView extends FrameLayout implements LifecycleEventListen
 
   @Override
   public void onHostDestroy() {
-
+    if (adView != null) {
+      adView.destroy();
+    }
   }
 }
