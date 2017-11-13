@@ -13,6 +13,7 @@ var iface = {
     onPlayAd: PropTypes.func,
     onStopAd: PropTypes.func,
     onPauseAd: PropTypes.func,
+    FBPlacementID: PropTypes.string,
     ...View.propTypes
   },
 };
