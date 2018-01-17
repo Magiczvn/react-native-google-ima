@@ -100,13 +100,14 @@ public class RNGoogleIMAView extends FrameLayout implements LifecycleEventListen
   };
 
   @Override public void onViewAdded(View child) {
+    /*String childName = child.getClass().getSimpleName();
     if(this.adsTagURL!=null){
-      String childName = child.getClass().getSimpleName();
       if(childName.toLowerCase().contains("webview")){
         child.measure(getMeasuredWidth(), getMeasuredHeight());
         child.layout(0,0, getMeasuredWidth(), getMeasuredHeight());
       }
-    }
+    }*/
+    reLayoutChildren(this);
     super.onViewAdded(child);
   }
 
@@ -231,11 +232,10 @@ public class RNGoogleIMAView extends FrameLayout implements LifecycleEventListen
           this.getContext(),
           this.fbPlacementID,
           new AdSize(
-              pxToDp(this.getMeasuredWidth()),
-              pxToDp(this.getMeasuredHeight())
+              pxToDp(getMeasuredWidth()),
+              pxToDp(getMeasuredHeight())
           )
       );
-
 
 
       adView.setAdListener(new InstreamVideoAdListener() {
@@ -243,6 +243,7 @@ public class RNGoogleIMAView extends FrameLayout implements LifecycleEventListen
         public void onAdLoaded(Ad ad) {
           // we have an ad so let's show it
           RNGoogleIMAView.this.addView(adView);
+
           adView.show();
           mEventEmitter.receiveEvent(getId(), Events.EVENT_LOADAD.toString(), null);
         }
@@ -277,6 +278,13 @@ public class RNGoogleIMAView extends FrameLayout implements LifecycleEventListen
       adView.loadAd();
     }
 
+  }
+
+  private void reLayoutChildren(View view) {
+    view.measure(
+            View.MeasureSpec.makeMeasureSpec(view.getMeasuredWidth(), View.MeasureSpec.EXACTLY),
+            View.MeasureSpec.makeMeasureSpec(view.getMeasuredHeight(), View.MeasureSpec.EXACTLY));
+    view.layout(view.getLeft(), view.getTop(), view.getRight(), view.getBottom());
   }
 
   public void setContentProgress(float position, float duration){
