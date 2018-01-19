@@ -1,7 +1,7 @@
 
-#import "RNReactNativeGoogleIma.h"
+#import "RNGoogleIMA.h"
 
-@implementation RNReactNativeGoogleIma
+@implementation RNGoogleIMA
 
 - (dispatch_queue_t)methodQueue
 {

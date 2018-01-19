@@ -5,7 +5,7 @@
 #import <React/RCTBridgeModule.h>
 #endif
 
-@interface RNReactNativeGoogleIma : NSObject <RCTBridgeModule>
+@interface RNGoogleIMA : NSObject <RCTBridgeModule>
 
 @end
   
