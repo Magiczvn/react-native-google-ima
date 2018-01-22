@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		C69AD2D02011DBAC007A755D /* RNGoogleIMA.m in Sources */ = {isa = PBXBuildFile; fileRef = C69AD2CF2011DBAC007A755D /* RNGoogleIMA.m */; };
+		C6A1D1682015F1E400B86686 /* RNGoogleIMAView.m in Sources */ = {isa = PBXBuildFile; fileRef = C6A1D1672015F1E400B86686 /* RNGoogleIMAView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -26,6 +27,8 @@
 		134814201AA4EA6300B7C361 /* libRNGoogleIMA.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRNGoogleIMA.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		C69AD2CE2011DBAC007A755D /* RNGoogleIMA.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNGoogleIMA.h; sourceTree = "<group>"; };
 		C69AD2CF2011DBAC007A755D /* RNGoogleIMA.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNGoogleIMA.m; sourceTree = "<group>"; };
+		C6A1D1662015F1CB00B86686 /* RNGoogleIMAView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNGoogleIMAView.h; sourceTree = "<group>"; };
+		C6A1D1672015F1E400B86686 /* RNGoogleIMAView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNGoogleIMAView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -50,6 +53,8 @@
 		58B511D21A9E6C8500147676 = {
 			isa = PBXGroup;
 			children = (
+				C6A1D1672015F1E400B86686 /* RNGoogleIMAView.m */,
+				C6A1D1662015F1CB00B86686 /* RNGoogleIMAView.h */,
 				C69AD2CE2011DBAC007A755D /* RNGoogleIMA.h */,
 				C69AD2CF2011DBAC007A755D /* RNGoogleIMA.m */,
 				134814211AA4EA7D00B7C361 /* Products */,
@@ -113,6 +118,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C69AD2D02011DBAC007A755D /* RNGoogleIMA.m in Sources */,
+				C6A1D1682015F1E400B86686 /* RNGoogleIMAView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
