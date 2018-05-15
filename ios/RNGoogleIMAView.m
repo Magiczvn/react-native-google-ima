@@ -40,8 +40,6 @@
     [_adViewController.view setFrame:self.bounds];
     [self addSubview: _adViewController.view];
     
-    [FBAdSettings setLogLevel:FBAdLogLevelLog];
-    [FBAdSettings addTestDevice:@"5377da984d4daad958301f92914c6a2d4b18da4d"];
     self.adView = [[FBInstreamAdView alloc] initWithPlacementID:_placementID];
     self.adView.delegate = self;
     [self.adView loadAd];
@@ -50,7 +48,7 @@
 - (void)adViewDidLoad:(FBInstreamAdView *)adView
 {
     self.onLoadAd([[NSDictionary alloc] initWithObjectsAndKeys:@"placementID", adView.placementID, nil]);
-    NSLog(@"Ad is loaded and ready to be displayed");
+    //NSLog(@"Ad is loaded and ready to be displayed");
     
     // The ad can now be added to the layout and shown
     self.adView.frame = self.bounds;
@@ -62,7 +60,7 @@
 
 - (void)adViewDidEnd:(FBInstreamAdView *)adView
 {
-    NSLog(@"Ad ended"); 
+    //NSLog(@"Ad ended");
     [self.adView removeFromSuperview];
     self.adView = nil;
     [_adViewController.view removeFromSuperview];
@@ -72,7 +70,7 @@
 
 - (void)adView:(FBInstreamAdView *)adView didFailWithError:(NSError *)error
 {
-    NSLog(@"Ad failed: %@", error.localizedDescription);
+    //NSLog(@"Ad failed: %@", error.localizedDescription);
     [self.adView removeFromSuperview];
     self.adView = nil;
     [_adViewController.view removeFromSuperview];
