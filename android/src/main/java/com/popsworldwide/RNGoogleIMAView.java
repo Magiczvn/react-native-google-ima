@@ -177,6 +177,10 @@ public class RNGoogleIMAView extends FrameLayout implements LifecycleEventListen
           mEventEmitter.receiveEvent(getId(), Events.EVENT_PLAYAD.toString(), null);
         }
 
+        @Override public int getVolume (){
+          return 1;
+        }
+
         @Override public void loadAd(String s) {
           WritableMap event = Arguments.createMap();
           event.putString("url", s);
